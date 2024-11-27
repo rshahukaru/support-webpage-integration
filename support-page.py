@@ -1,9 +1,15 @@
+import sys
 import streamlit as st
 from openai import OpenAI
+
+# Workaround for sqlite3 issue
+__import__('pysqlite3')
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import chromadb
+from chromadb.config import Settings
+
 import numpy as np
 
-# UI Configuration
 st.set_page_config(
     page_title="Travel Buddy",
     page_icon="✈️",
@@ -37,10 +43,8 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Initialize OpenAI client
 client = OpenAI(api_key=st.secrets["openai_api_key"])
 
-# Travel knowledge base
 TRAVEL_DOCS = {
     "destinations.txt": """Popular destinations guide, visa requirements, best times to visit""",
     "local_customs.txt": """Cultural norms, etiquette, dress codes, tipping practices""",
@@ -68,14 +72,12 @@ def get_chat_response(query, context):
     )
     return response.choices[0].message.content
 
-# Chat interface
 st.title("🌍 Travel Buddy")
 st.subheader("Your AI Travel Assistant")
 
 if 'messages' not in st.session_state:
     st.session_state.messages = []
 
-# Display chat messages
 for message in st.session_state.messages:
     with st.container():
         st.markdown(
@@ -83,7 +85,6 @@ for message in st.session_state.messages:
             unsafe_allow_html=True
         )
 
-# Chat input
 query = st.chat_input("Ask me anything about your travel plans...")
 
 if query:
