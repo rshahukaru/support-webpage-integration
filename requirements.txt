@@ -1,7 +1,8 @@
 streamlit
 openai
 chromadb
+pysqlite3-binary
 numpy
 beautifulsoup4
 audio-recorder-streamlit
-pysqlite3-binary
+tornado
