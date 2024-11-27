@@ -1,0 +1,7 @@
+streamlit
+openai
+chromadb
+numpy
+beautifulsoup4
+audio-recorder-streamlit
+pysqlite3-binary
